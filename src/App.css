@@ -2,9 +2,20 @@
   text-align: center;
 }
 .nav{
-  display:flex;
-  gap:.5rem;
-  padding:1rem;
-  background:#fff;
-  border-bottom:1px solid #e2e8f0
+  display:flex;  gap:.5rem;  padding:1rem;  background:#fff;  border-bottom:1px solid #e2e8f0
+}
+/* A classe .container é necessária para estilizar o contêiner principal da página, proporcionando uma aparência agradável e organizada para o conteúdo. 
+Ela define a largura máxima do contêiner, centraliza-o na página, adiciona espaçamento interno, um fundo branco, bordas arredondadas e uma sombra sutil para destacar o conteúdo. 
+Sem a classe .container, o conteúdo da página ficaria desorganizado e sem estilo, dificultando a leitura e a navegação para os usuários. */
+/* Irá centralizar os dados da págin Login.jsx. */
+.container{
+  max-width:720px;margin:2rem auto;padding:1.5rem;background:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.06)
+}
+/* A classe .grid é necessária para criar um layout de grade flexível e responsivo, permitindo que os elementos dentro do contêiner sejam organizados de forma eficiente e visualmente agradável.
+Ela define o display como grid e adiciona um espaçamento entre os elementos usando a propriedade gap. Sem a classe .grid, os elementos dentro do contêiner ficariam desorganizados e sem um layout estruturado, dificultando a leitura e a navegação para os usuários. A classe .grid é fundamental para criar uma experiência de usuário agradável e organizada, especialmente em páginas com múltipl
+os elementos, como formulários ou listas de itens. */
+/* Organiza os itens da tela de login um abaixo do outro, com um espaçamento entre eles. */
+.grid{
+  display:grid;
+  gap:1rem
 }
