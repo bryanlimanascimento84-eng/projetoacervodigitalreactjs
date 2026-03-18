@@ -4,6 +4,7 @@ import { supabase } from '../../infra/supabase/supabaseClient'
 function Estado() {
     
   console.log("URL do Supabase:", process.env.REACT_APP_SUPABASE_URL);
+  console.log("Ambiente de execução:", process.env.NODE_ENV);
 
   const [dados, setDados] = useState([])
   useEffect(() => {
