@@ -1,25 +1,102 @@
-.App {
-  text-align: center;
+:root{
+  --primary:#003A8F;      /* azul institucional */
+  --secondary:#FFC72C;    /* amarelo destaque */
+  --bg:#F5F7FA;           /* fundo geral */
+  --text:#1F2937;         /* cinza escuro */
+  --border:#E5E7EB;
 }
+
+body{
+  margin:0;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* NAVBAR */
 .nav{
   display:flex; /* Define o layout como flexível, permitindo que os itens dentro da barra de navegação sejam organizados de forma flexível e responsiva.*/
-  gap:.5rem;  /* Adiciona um espaçamento de 0.5rem entre os itens dentro da barra de navegação, melhorando a legibilidade e a estética visual. */
-  padding:1rem;  /* Adiciona um espaçamento interno de 1rem em torno do conteúdo da barra de navegação, proporcionando um layout mais agradável e organizado. */
-  background:#fff; /* Define a cor de fundo da barra de navegação como branco, criando um contraste visual com o conteúdo e melhorando a legibilidade. */ 
-  border-bottom:1px solid #e2e8f0 /* Adiciona uma borda inferior de 1 pixel com a cor #e2e8f0, criando uma separação visual entre a barra de navegação e o restante do conteúdo da página, melhorando a estrutura visual e a organização. */
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem; /* Adiciona um espaçamento de 0.5rem entre os itens dentro da barra de navegação, melhorando a legibilidade e a estética visual. */
+  padding:1rem 2rem; /* Adiciona um espaçamento interno de 1rem em torno do conteúdo da barra de navegação, proporcionando um layout mais agradável e organizado. */
+  background:#fff;/* Define a cor de fundo da barra de navegação como branco, criando um contraste visual com o conteúdo e melhorando a legibilidade. */ 
+  border-bottom:1px solid var(--border); /* Adiciona uma borda inferior de 1 pixel com a cor #e2e8f0, criando uma separação visual entre a barra de navegação e o restante do conteúdo da página, melhorando a estrutura visual e a organização. */
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
 }
+
+/* LINKS DA NAV */
+.nav a{
+  text-decoration:none;
+  color:var(--primary);
+  font-weight:600;
+  padding:.5rem .75rem;
+  border-radius:6px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  background:rgba(0,58,143,.08);
+}
+
+/* CONTAINER PRINCIPAL */
 /* A classe .container é necessária para estilizar o contêiner principal da página, proporcionando uma aparência agradável e organizada para o conteúdo. 
 Ela define a largura máxima do contêiner, centraliza-o na página, adiciona espaçamento interno, um fundo branco, bordas arredondadas e uma sombra sutil para destacar o conteúdo. 
 Sem a classe .container, o conteúdo da página ficaria desorganizado e sem estilo, dificultando a leitura e a navegação para os usuários. */
 /* Irá centralizar os dados da págin Login.jsx. */
 .container{
-  max-width:720px;margin:2rem auto;padding:1.5rem;background:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.06)
+  max-width:900px;
+  margin:2rem auto;
+  padding:2rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
+
+/* GRID */
 /* A classe .grid é necessária para criar um layout de grade flexível e responsivo, permitindo que os elementos dentro do contêiner sejam organizados de forma eficiente e visualmente agradável.
 Ela define o display como grid e adiciona um espaçamento entre os elementos usando a propriedade gap. Sem a classe .grid, os elementos dentro do contêiner ficariam desorganizados e sem um layout estruturado, dificultando a leitura e a navegação para os usuários. A classe .grid é fundamental para criar uma experiência de usuário agradável e organizada, especialmente em páginas com múltipl
 os elementos, como formulários ou listas de itens. */
-/* Organiza os itens da tela de login um abaixo do outro, com um espaçamento entre eles. */
+/* Organiza os itens da tela de login um abaixo do outro, com um espaçamento entre eles. 
+
+Usado no arquivo login.jsx.
+*/
 .grid{
   display:grid;
-  gap:1rem
+  gap:1.25rem;
+}
+
+/* BOTÃO PADRÃO */
+.button{
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  padding:.75rem 1.25rem;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.button:hover{
+  background:#002C6D;
+}
+
+/* BOTÃO SECUNDÁRIO */
+.button.secondary{
+  background:var(--secondary);
+  color:#000;
+}
+
+.button.secondary:hover{
+  filter:brightness(0.95);
+}
+
+/* CARD */
+.card{
+  padding:1.5rem;
+  border-radius:10px;
+  background:#fff;
+  border:1px solid var(--border);
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
 }
