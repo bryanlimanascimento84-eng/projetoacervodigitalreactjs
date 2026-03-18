@@ -25,6 +25,16 @@ import DetailsPageBD from './mapabrasilargentinabd/DetailsPageBD';
 // O router é exportado para ser utilizado no arquivo principal da aplicação, onde será passado para o componente RouterProvider para habilitar a navegação entre as rotas definidas. Ele é necessário para que a aplicação possa navegar entre as diferentes páginas com base nas URLs, proporcionando uma experiência de usuário fluida e organizada. Sem o router, a aplicação não teria uma estrutura de navegação clara, o que dificultaria a experiência do usuário e a organização do código.
 // Em resumo, o arquivo src/routes.jsx é fundamental para a definição das rotas da aplicação, permitindo que os usuários acessem diferentes páginas com base nas URLs e garantindo uma estrutura de navegação clara e organizada.
 
+/**
+ * Lógica de Basename Dinâmico:
+ * No GitHub Pages, o processo de build define a variável de ambiente PUBLIC_URL.
+ * Se estivermos em desenvolvimento (localhost), o basename será "/" (raiz).
+ * Se estivermos em produção (GitHub), o basename será o nome do repositório.
+ */
+const basename = process.env.NODE_ENV === 'production' 
+  ? '/projetoacervodigitalreactjs' 
+  : '/';
+
 // index: Define a rota raiz como a página de primeiro acesso. Isso significa que quando os usuários acessarem a URL raiz ("/"), eles serão redirecionados automaticamente para a página de primeiro acesso, onde poderão definir suas senhas pela primeira vez. Essa configuração é útil para garantir que os usuários sejam direcionados para a página correta ao acessar a aplicação pela primeira vez, proporcionando uma experiência de usuário mais intuitiva e eficiente. Sem essa configuração, os usuários poderiam acessar a URL raiz sem serem redirecionados para a página de primeiro acesso, o que poderia resultar em confusão e dificultar o processo de definição de senha para novos usuários.
 export const router = createBrowserRouter([
   { path: '/login', element: <Login/> },
