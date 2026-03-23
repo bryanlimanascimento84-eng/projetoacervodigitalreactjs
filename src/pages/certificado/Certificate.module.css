@@ -1,0 +1,236 @@
+/*
+O CSS foi pensado para manter uma aparência solene, com bordas duplas e tipografia equilibrada.
+O @media print garante que, ao imprimir, cada certificado saia em uma página separada.
+*/
+
+/*
+Responsividade
+
+Principais Mudanças para Responsividade:
+aspect-ratio: 1.414 / 1: Esta é a chave. Em telas de celular, o certificado não terá uma altura fixa em pixels. Ele ocupará a largura da tela e ajustará a altura automaticamente para manter a proporção de uma folha A4 deitada.
+
+clamp() para Fontes: Substituí tamanhos fixos (px) por clamp(min, preferencial, max).
+
+Exemplo: font-size: clamp(22px, 4vw, 42px). No celular, o título terá 22px. Em telas médias, ele crescerá proporcionalmente à largura da tela (4vw). Em telas muito grandes, ele travará em 42px para não ficar gigante.
+
+Media Query para Desktop: Se a tela for maior que 1024px, fixamos a largura do certificado em 1024px. Isso impede que o certificado estique infinitamente em monitores ultrawide, mantendo a aparência de um documento.
+
+Ajustes de Padding e Margem: Usamos porcentagens (%) e unidades relativas (em) para que os espaços internos diminuam em telas menores sem quebrar o layout.
+
+Correção na Impressão: A seção @media print foi refinada para garantir que, ao imprimir, o navegador ignore as regras de tela e force o tamanho A4 exato (297x210mm) em orientação paisagem.
+
+
+
+*/
+/* ============================================================
+   Estilos Gerais e Container Principal
+   ============================================================ */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f2f5; /* Fundo levemente acinzentado para destacar o papel */
+    padding: 10px; /* Padding menor em telas pequenas */
+    min-height: 100vh;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* ============================================================
+   O "Papel" do Certificado - Base Responsiva
+   ============================================================ */
+.certificatePage {
+    background-color: white;
+    width: 100%; /* Ocupa tudo em telas pequenas */
+    max-width: 100%; /* Garante que não transborde */
+    
+    /* Mantém a proporção de A4 Paisagem (aprox 1:1.41) */
+    aspect-ratio: 1.414 / 1; 
+    
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden; /* Garante que nada saia da borda */
+}
+
+/* ============================================================
+   Bordas Ornamentais Responsivas
+   ============================================================ */
+.borderOuter {
+    border: 4px double #1a3c5e; /* Borda mais fina no mobile */
+    width: 95%; /* Margem interna em relação à página */
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.borderInner {
+    border: 1px solid #1a3c5e; /* Borda mais fina no mobile */
+    width: 97%;
+    height: 97%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribui o conteúdo verticalmente */
+    align-items: center;
+    
+    /* Padding dinâmico: menor em telas pequenas, maior em telas grandes */
+    padding: 3% 5%; 
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* ============================================================
+   Tipografia Responsiva (Usando 'vw' e 'em')
+   ============================================================ */
+.institution {
+    font-family: 'Georgia', serif;
+    /* Tamanho baseado na largura da tela (vw) com limites (clamp) */
+    font-size: clamp(16px, 2.5vw, 28px); 
+    color: #1a3c5e;
+    text-transform: uppercase;
+    margin: 0 0 0.5em 0;
+    letter-spacing: 1px;
+}
+
+.title {
+    /* Clamp: Min, Preferencial, Max */
+    font-size: clamp(22px, 4vw, 42px);
+    font-family: 'Georgia', serif;
+    color: #333;
+    margin: 0 0 1em 0;
+    font-weight: bold;
+}
+
+.content {
+    width: 100%;
+    max-width: 90%;
+    flex-grow: 1; /* Ocupa o espaço central disponível */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text {
+    font-size: clamp(14px, 2vw, 22px);
+    line-height: 1.5;
+    margin-bottom: 1.2em;
+    color: #222;
+}
+
+.text strong {
+    color: #000;
+    font-weight: 700;
+}
+
+.description {
+    font-size: clamp(11px, 1.5vw, 16px);
+    color: #555;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 1em;
+}
+
+/* ============================================================
+   Rodapé e Assinaturas Responsivas
+   ============================================================ */
+.footer {
+    width: 100%;
+    margin-top: auto; /* Empurra o rodapé para baixo */
+}
+
+.date {
+    font-size: clamp(12px, 1.8vw, 18px);
+    margin-bottom: 2em; /* Espaço para as assinaturas */
+}
+
+.signatureRow {
+    display: flex;
+    flex-direction: row; /* Mantém lado a lado mesmo no mobile, mas diminui o tamanho */
+    justify-content: space-around;
+    width: 100%;
+    gap: 10px;
+}
+
+.signatureBox {
+    flex: 1; /* Divide o espaço igualmente */
+    max-width: 40%; /* Limita a largura máxima de cada caixa */
+}
+
+.line {
+    border-top: 1px solid #333;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.signerName {
+    font-weight: bold;
+    font-size: clamp(10px, 1.5vw, 15px);
+    margin: 0;
+}
+
+.role {
+    font-size: clamp(9px, 1.3vw, 13px);
+    margin: 0;
+    color: #444;
+}
+
+/* ============================================================
+   Media Query para Desktop (Telas Maiores)
+   ============================================================ */
+@media screen and (min-width: 1024px) {
+    .container {
+        padding: 40px;
+    }
+
+    .certificatePage {
+        /* Fixa o tamanho em desktop para parecer um papel, mas mantém o aspect-ratio */
+        width: 1024px; 
+        max-width: 1024px;
+        height: auto; /* Deixa o aspect-ratio definir a altura */
+    }
+
+    /* Aumenta a espessura das bordas em telas grandes */
+    .borderOuter { border-width: 8px; }
+    .borderInner { border-width: 2px; }
+}
+
+/* ============================================================
+   Configuração para Impressão (Mantém o padrão A4)
+   ============================================================ */
+@media print {
+    @page {
+        size: A4 landscape; /* Força orientação paisagem */
+        margin: 0; /* Remove margens padrão da impressora */
+    }
+
+    body {
+        -webkit-print-color-adjust: exact; /* Força cores de fundo */
+        print-color-adjust: exact;
+    }
+
+    .container {
+        padding: 0;
+        background-color: white;
+    }
+
+    .certificatePage {
+        width: 297mm; /* Tamanho A4 exato */
+        height: 210mm;
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always; /* Um certificado por página */
+        
+        /* Reseta propriedades de tela que podem atrapalhar a impressão */
+        aspect-ratio: auto; 
+        max-width: none;
+    }
+
+    /* Garante que as bordas fiquem visíveis e bonitas na impressão */
+    .borderOuter { border-width: 8px !important; }
+    .borderInner { border-width: 2px !important; }
+}

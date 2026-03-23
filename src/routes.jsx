@@ -10,7 +10,6 @@ import App from './App';
 import FirstAccess from './pages/FirstAccess';
 import SubmitWork from './pages/cadastrarformulario/SubmitWork';
 import ReviewQueue from './pages/ReviewQueue';
-import Certificate from './pages/Certificate';
 import Dashboard from './pages/Dashboard';
 import Faculties from './pages/admin/Faculties';
 import Estado from './pages/admin/Estado'; // Utiliza o supabase para obter os dados do estado do sistema
@@ -20,6 +19,7 @@ import MapPageBD from './mapabrasilargentinabd/MapPageBD';
 import DetailsPageBD from './mapabrasilargentinabd/DetailsPageBD';
 import SubmitWorkTela02 from './pages/cadastrarformulario/SubmitWorkTela02';
 import SubmitWorkTela03 from './pages/cadastrarformulario/SubmitWorkTela03';
+import CertificateContainer from './pages/certificado/CertificateContainer';
 
 // Definição das rotas da aplicação utilizando createBrowserRouter.
 // A rota '/login' renderiza o componente Login, que é a página de login da aplicação.
@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
       
 
       { path: 'review', element: <ReviewQueue/> },
-      { path: 'certificate', element: <Certificate/> },
+      { path: 'certificate', element: <CertificateContainer/> },
 
       { path: 'admin/faculties', element:  <Faculties/> },
       { path: 'admin/estado', element:  <Estado/> },
