@@ -12,7 +12,7 @@ const ConsultaUnidade = () => {
 
   return (
     <div style={{ padding: '40px', fontFamily: 'Arial, sans-serif' }}>
-      <button onClick={() => navigate('/')}>← Voltar ao Mapa</button>
+      <button onClick={() => navigate('/unidadesfaculdade')}>← Voltar ao Mapa</button>
       <hr />
       <h1>{bar.name}</h1>
       <p><strong>Cidade:</strong> {bar.city}</p>
