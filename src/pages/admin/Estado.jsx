@@ -17,14 +17,15 @@ function Estado() {
               // Selecionar dados da tabela Estado criada no Supabase.
               const { data } = await supabase.from('Estado').select('*')
               console.log ("Dados tabela Estado - ",data,data.id, data.nome, data.capital)
-              setDados(data)
+              
+              setDados(data)// Carrega os dados do select
 
-                const { data: Estado, error } = await supabase.from('Estado').select('*')
-                if (error) {
+              const { data: Estado, error } = await supabase.from('Estado').select('*')
+              if (error) {
                   console.error('Erro ao buscar dados:', error)
-                } else {
+              } else {
                   console.log('Dados de Estado:', Estado)
-                }
+              }
         } catch (error) {
               setErroMensagem('Erro ao buscar dados (Estado.jsx): ' + error.message);
               console.error('Erro ao buscar dados:', error);

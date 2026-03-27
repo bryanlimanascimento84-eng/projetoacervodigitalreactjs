@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './SubmitWork.module.css';
+//import styles from './SubmitWork.module.css';
 import ProgressBar from './ProgressBar';
 
+import { supabase } from '../../infra/supabase/supabaseClient'
+
 const SubmitWork = () => {
+
+  console.log("URL do Supabase:", process.env.REACT_APP_SUPABASE_URL);
+  console.log("Ambiente de execução:", process.env.NODE_ENV);
+  const [erroMensagem, setErroMensagem] = useState(null); // Estado para a mensagem de erro
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nucleo: '',
@@ -18,13 +25,6 @@ const SubmitWork = () => {
     realizou: ''
   });
 
-  const regionaisData = {
-    Sudeste: ['Angra dos Reis', 'Bangu', 'Brooklin', 'Cabo Frio'],
-    Nordeste: ['Alagoinhas', 'Aracaju', 'Canindé', 'Costa Azul'],
-    "Norte-Sul": ['Curitiba', 'Cristo Rei', 'Cuiabá', 'Dourados'],
-    Wyden: ['Adrianópolis I', 'Boa vista - Wyden', 'Dunas-CE', 'Rio Vermelho']
-  };
-
   const handleCheckbox = (curso) => {
     const updated = formData.cursos.includes(curso)
       ? formData.cursos.filter(c => c !== curso)
@@ -36,149 +36,150 @@ const SubmitWork = () => {
     navigate('/SubmitWorkTela02', { state: { data: formData } });
   };
 
+  /*
+  const regionaisData = {
+    Sudeste: ['Angra dos Reis', 'Bangu', 'Brooklin', 'Cabo Frio'],
+    Nordeste: ['Alagoinhas', 'Aracaju', 'Canindé', 'Costa Azul'],
+    "Norte-Sul": ['Curitiba', 'Cristo Rei', 'Cuiabá', 'Dourados'],
+    Wyden: ['Adrianópolis I', 'Boa vista - Wyden', 'Dunas-CE', 'Rio Vermelho']
+  };*/
+
+  const [dadosRegional, setDadosRegional] = useState([])
+  useEffect(() => {
+    async function fetchItems() {
+
+          try {
+              console.log ("Estrutura objeto Supabase: - ",supabase)
+
+             
+              /*
+              Após criar a tabela no Supabase precisa tornar ela comacesso público, caso contrário não serão selecionados dados.
+              Via Dashboard do Supabase (Recomendado)
+              Acesse seu projeto no painel do Supabase.
+              Vá em Database > Policies (ou Authentication > Policies).
+              Encontre sua tabela e clique em Create Policy.
+              Selecione a opção Enable read access for all users  - Botão lado direito com select em Verde.
+              Clique em Review e depois em Save policy. 
+              */
+              // Selecionar dados da tabela Estado criada no Supabase.
+              //let data  = await supabase.from('Estado').select('*')
+              const { data } = await supabase.from('Regional').select('*')
+              const { data: Regional, error } = await supabase.from('Regional').select('*')
+              console.log ("************")
+              console.log ("Dados tabela Regional - ",data,data.id,data.nome_regional)
+
+              setDadosRegional(data)// Carrega os dados do select
+              if (error) {
+                  console.error('Erro ao buscar dados:', error)
+              } else {
+                  console.log('Dados de Regional:', Regional)
+              }
+        } catch (error) {
+              setErroMensagem('Erro ao buscar dados (SubmitWork.jsx): ' + error.message);
+              console.error('Erro ao buscar dados:', error);
+        }
+      }
+  
+      fetchItems()
+    }, []) 
+
+  const [dadosUnidadeRegional, setUnidadeRegional] = useState([])
+  useEffect(() => {
+    async function fetchItems() {
+
+          try {
+            /*
+              console.log ("Estrutura objeto Supabase: - ",supabase)
+
+              // Selecionar dados da tabela Unidades_Regional criada no Supabase.
+              const { data } = await supabase.from('Unidades_Regional').select('*')
+              console.log ("Dados tabela Regional - ",data,data.id,data.nome_regional)
+              
+              setUnidadeRegional(data)// Carrega os dados do select
+
+              const { data: Unidades_Regional, error } = await supabase.from('Unidades_Regional').select('*')
+              if (error) {
+                  console.error('Erro ao buscar dados Unidades_Regional:', error)
+              } else {
+                  console.log('Dados de Unidades_Regional:', Unidades_Regional)
+              }
+                  */
+        } catch (error) {
+              setErroMensagem('Erro ao buscar dados  (SubmitWork.jsx): ' + error.message);
+              console.error('Erro ao buscar dados:', error);
+        }
+      }
+  
+      fetchItems()
+    }, []) 
+
   return (
-    <div className={styles.container}>
+    <div >
       <ProgressBar currentStep={1} />
-      <header className={styles.header}>
+      <header >
         <h2>Envio de Evidências {formData.nucleo === 'LTD/NID' && '- LTD/NID 2026.1'}</h2>
       </header>
 
-      <div className={styles.mainMessage}>
-        Olá, <strong>Douglas</strong>. Quando você enviar este formulário, o proprietário verá seu nome e endereço de e-mail.
-      </div>
-
-      <p className={styles.tip}><span className={styles.required}>*</span> Obrigatória</p>
-
-      {/* Escolha do Núcleo */}
-      <div className={styles.formGroup}>
-        <label className={styles.label}>Escolha o núcleo de extensão <span className={styles.required}>*</span></label>
-        <select 
-          className={styles.select}
-          onChange={(e) => setFormData({...formData, nucleo: e.target.value})}
-        >
-          <option value="">Selecione...</option>
-          <option value="LTD/NID">LTD/NID - Laboratório de Transformação Digital</option>
-          <option value="NAC">NAC - Núcleo de apoio a Carreiras</option>
-          <option value="LPG">LPG</option>
-          <option value="NAF">NAF - Núcleo de apoio Financeiro</option>
-          <option value="Engenharia">Engenharia</option>
-        </select>
-      </div>
-
-      {formData.nucleo === 'LTD/NID' && (
-        <div className={styles.section}>
-          <h3>Laboratório de Transformação Digital</h3>
-          
-          <div className={styles.formGroup}>
-            <label className={styles.label}>1. Informe seu nome: <span className={styles.required}>*</span></label>
-            <input 
-              type="text" 
-              placeholder="Insira sua resposta" 
-              className={styles.input}
-              onChange={(e) => setFormData({...formData, nome: e.target.value})}
-            />
-            <span className={styles.tip}>Esta pergunta é obrigatória.</span>
+{/* Exibição da mensagem de erro em HTML caso exista */}
+        {erroMensagem && (
+          <div style={{ 
+                backgroundColor: '#ffebee', 
+                color: '#c62828', 
+                padding: '15px', 
+                borderRadius: '8px', 
+                border: '1px solid #ef9a9a',
+                marginBottom: '20px',
+                fontWeight: 'bold'
+              }
+              }>
+            ⚠️ Atenção: {erroMensagem}
           </div>
+        )}
 
-          <div className={styles.formGroup}>
-            <label className={styles.label}>2. Matrícula Docente: <span className={styles.required}>*</span></label>
-            <input 
-              type="text" 
-              placeholder="Insira sua resposta" 
-              className={styles.input}
-              onChange={(e) => setFormData({...formData, matricula: e.target.value})}
-            />
-            <span className={styles.tip}>Esta pergunta é obrigatória.</span>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>3. Selecione sua Regional <span className={styles.required}>*</span></label>
-            <select 
-              className={styles.select}
-              onChange={(e) => setFormData({...formData, regional: e.target.value})}
-            >
-              <option value="">Selecionar sua resposta</option>
-              {Object.keys(regionaisData).map(reg => <option key={reg} value={reg}>{reg}</option>)}
-            </select>
-            <span className={styles.tip}>Esta pergunta é obrigatória.</span>
-          </div>
-
-          {formData.regional && (
-            <>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>4. Unidade alocada no LTD/NID: <span className={styles.required}>*</span></label>
-                <select 
-                  className={styles.select}
-                  onChange={(e) => setFormData({...formData, unidade: e.target.value})}
-                >
+        {/* Renderização condicional do Mapa ou lista */}
+        {
+            !erroMensagem && dadosUnidadeRegional.length === 0 ? (
+              <div >
+                Olá, <strong>Douglas</strong>. Quando você enviar este formulário, o proprietário verá seu nome e endereço de e-mail.
+                <p><span >*</span> Obrigatória</p> 
+              
+               <label>3. Selecione sua Regional <span >*</span></label>
+               <br></br>  
+               <span >Esta pergunta é obrigatória.</span>
+                              <br></br>  
+               <select onChange={(e) => setFormData({...formData, regional: e.target.value})} >
                   <option value="">Selecionar sua resposta</option>
-                  {regionaisData[formData.regional].map(city => <option key={city} value={city}>{city}</option>)}
+
+                  {/* 
+                    O que mudou?
+                    dadosRegional.map: Como o Supabase retorna uma lista (array), iteramos diretamente sobre ela.
+                    key={reg.id}: É importante usar um identificador único da sua tabela (geralmente o id) para a propriedade key.
+                    value={reg.id}: Geralmente, no banco de dados, queremos salvar o ID da regional, mas mostrar o nome para o usuário.
+                    {reg.nome_regional}: Aqui é onde o texto aparecerá para o usuário.*/}
+
+                    {dadosRegional.map((reg) => (
+                      <option key={reg.id} value={reg.id}>
+                        {reg.nome_regional}
+                      </option>
+                    ))}
                 </select>
+                
+
               </div>
-
-              {formData.unidade && (
-                <>
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>5. Selecione o(s) curso(s): <span className={styles.required}>*</span></label>
-                    <div className={styles.checkboxGroup}>
-                      {["Análise e Desenvolvimento de Sistemas", "Ciência da Computação", "DEVOPS", "Engenharia de Computação", "Gestão da TI", "Jogos Digitais", "Redes", "Sistemas de Informação", "Sistemas para Internet"].map(curso => (
-                        <label key={curso} className={styles.option}>
-                          <input type="checkbox" onChange={() => handleCheckbox(curso)} /> {curso}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>6. Eixo de atuação: <span className={styles.required}>*</span></label>
-                    <select className={styles.select} onChange={(e) => setFormData({...formData, eixo: e.target.value})}>
-                      <option value="">Selecionar...</option>
-                      <option>LTD - Desenvolvimento de Software</option>
-                      <option>LTD - Gestão da Tecnologia da Informação</option>
-                      <option>LTD - Infraestrutura</option>
-                      <option>NID - Núcleo de Inclusão Digital</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>7. Período: <span className={styles.required}>*</span></label>
-                    <select className={styles.select} onChange={(e) => setFormData({...formData, periodo: e.target.value})}>
-                      <option value="">Selecionar...</option>
-                      <option>Março/2026</option>
-                      <option>Abril/2026</option>
-                      <option>Maio/2026</option>
-                      <option>Junho/2026</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>8. Atividade prevista: <span className={styles.required}>*</span></label>
-                    <select className={styles.select} onChange={(e) => setFormData({...formData, atividade: e.target.value})}>
-                      <option value="">Selecionar...</option>
-                      {[...Array(12)].map((_, i) => (
-                        <option key={i} value={`Atividade ${i+1}`}>Atividade {String(i+1).padStart(2, '0')}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>9. Realizou a atividade? <span className={styles.required}>*</span></label>
-                    <div className={styles.radioGroup}>
-                      <label className={styles.option}><input type="radio" name="realizou" value="Sim" onChange={(e) => setFormData({...formData, realizou: e.target.value})} /> Sim</label>
-                      <label className={styles.option}><input type="radio" name="realizou" value="Não" onChange={(e) => setFormData({...formData, realizou: e.target.value})} /> Não</label>
-                    </div>
-                  </div>
-                </>
-              )}
-            </>
-          )}
-        </div>
-      )}
-
-      <button className={styles.buttonNext} onClick={handleAvançar}>Avançar</button>
+              
+              
+            ) 
+              : 
+            (
+              <p>Algum erro ocorreu</p>
+            )
+            
+        }
     </div>
-  );
-};
+  )
+}
+             
+
 
 export default SubmitWork;
 
